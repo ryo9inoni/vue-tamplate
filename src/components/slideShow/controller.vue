@@ -1,13 +1,12 @@
 <template lang="pug">
-.controller
-    .controller__wrap
-        .controller__button.-next(@click="Next")
-        .controller__button.-prev(@click="Prev")
+.slideShow__controller.controller
+    .controller__button.-next(@click="Next")
+    .controller__button.-prev(@click="Prev")
 </template>
 
 <script>
-
 export default {
+    name: "Controller",
     props:{
     },
     data(){
@@ -39,19 +38,34 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
+    padding: 0 120px;
     width: 100%;
     height: 100%;
-    &__wrap{}
+    z-index: 1;
     &__button{
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
         &.-next{
-            right: 8px;
+            left: 0;
         }
         &.-prev{
-            left: 8px;
+            right: 0;
         }
-        &::before,
-        &::after{
+        &::before{
             content: "";
+            display: inline-block;
+            width: 64px;
+            height: 64px;
+            border-bottom: solid 1px #fff;
+        }
+        &.-next::before{
+            border-right: solid 1px #fff;
+            transform: rotateZ(-45deg);
+        }
+        &.-prev::before{
+            border-left: solid 1px #fff;
+            transform: rotateZ(45deg);
         }
     }
 }

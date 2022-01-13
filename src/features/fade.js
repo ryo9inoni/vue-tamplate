@@ -11,8 +11,6 @@
 
 const FADE = (element = null, type = "in", duration = 300, easing = "ease-out") => {
 
-  if(!element) return;
-
   // propertyValue
   const valueFirst = type == "in" ? "block" : "0";
   const valueLast = type == "in" ? "1" : "none";
@@ -22,6 +20,10 @@ const FADE = (element = null, type = "in", duration = 300, easing = "ease-out") 
   const transition = () => {
     element.style.transitionDuration = duration+"ms";
     element.style.transitionTimingFunction = easing;
+    element.addEventListener("transitionend", () => {
+      element.style.transitionDuration = "";
+      element.style.transitionTimingFunction = "";
+    });
   }
 
   // styleFirst
@@ -36,7 +38,7 @@ const FADE = (element = null, type = "in", duration = 300, easing = "ease-out") 
   }
 
   // styleを監視
-  const tick = () => {
+  const watch = () => {
 
     // style, propertyValueを取得
     const style = window.getComputedStyle(element);
@@ -58,12 +60,10 @@ const FADE = (element = null, type = "in", duration = 300, easing = "ease-out") 
     }
 
     // valueLastとvalueが同じ値になるまで間、styleを監視
-    if (valueFirst !== value) {
-      window.requestAnimationFrame(tick);
-    }
+    if (valueFirst !== value) requestAnimationFrame(watch);
 
   };
-  tick();
+  watch();
 
 }
 

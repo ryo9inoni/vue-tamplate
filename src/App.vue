@@ -3,7 +3,6 @@
 </template>
 
 <style lang="scss">
-
 #app {
   width: 100%;
   min-height: 100vh;
@@ -12,5 +11,8 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+img{
+  vertical-align: bottom;
 }
 </style>
