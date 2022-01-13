@@ -1,17 +1,19 @@
 <template lang="pug">
 .home
-  slideShowFade(
-    :contents="images",
+  SlideShow_fade(
     :id="1",
-    :interval="3000"
+    :contents="images",
+    :interval="3000",
+    :duration="300",
+    :easing="'ease-out'",
   )
 </template>
 
 <script>
-import slideShowFade from "@/components/slideShow/fade";
+import SlideShow_fade from "@/components/slideShow/fade";
 
 export default {
-  components: { slideShowFade },
+  components: { SlideShow_fade },
   data(){
     return{
       images: [
@@ -32,6 +34,5 @@ export default {
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 100vh;
 }
 </style>
