@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import SlideShow_fade from "@/components/slideShow/fade/";
+import SlideShow_fade from "@/components/slideShow/";
 
 export default {
   name: "Home",
@@ -36,6 +36,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 36px 24px;
   width: 100%;
 }
 </style>

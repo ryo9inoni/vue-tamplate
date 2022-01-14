@@ -10,7 +10,6 @@
 ***/
 
 const FADE = (element = null, type = "in", duration = 300, easing = "ease-out") => {
-
   // propertyValue
   const valueFirst = type == "in" ? "block" : "0";
   const valueLast = type == "in" ? "1" : "none";

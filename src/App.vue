@@ -3,9 +3,10 @@
 </template>
 
 <style lang="scss">
+* {
+  box-sizing: border-box;
+}
 #app {
-  width: 100%;
-  min-height: 100vh;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
