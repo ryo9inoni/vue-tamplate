@@ -59,7 +59,7 @@ const FADE = (element = null, type = "in", duration = 300, easing = "ease-out") 
         break;
     }
 
-    // valueLastとvalueが同じ値になるまで間、styleを監視
+    // valueFirstとvalueが同じ値になるまで間、styleを監視
     if (valueFirst !== value) requestAnimationFrame(watch);
 
   };
