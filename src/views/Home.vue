@@ -3,7 +3,7 @@
   SlideShow_fade(
     :contents="images",
     :interval="3000",
-    :duration="900",
+    :duration="300",
     :easing="'ease-out'",
     :controller="true",
   )

@@ -17,7 +17,7 @@ import Pagination from "@/components/slideShow/pagination";
 // import FADE from "@/features/fade";
 
 export default {
-    name: "SlideShow_fade",
+    name: "SlideShow",
     components:{
         Controller,
         Pagination
@@ -42,7 +42,6 @@ export default {
     },
     mounted(){
         window.addEventListener("load", this.Init);
-        setTimeout(this.Tick, this.interval);
     },
     watch:{
         Auto(){
@@ -50,9 +49,9 @@ export default {
         }
     },
     computed:{
-        Auto(){
-            return this.index;
-        }
+        // Auto(){
+        //     return this.index;
+        // }
     },
     methods:{
         Init(){
@@ -68,12 +67,14 @@ export default {
             // 初期位置設定
             this.range = this.$el.clientWidth * this.index;
             this.$refs["wrapper"].style.transform = "translate3d(-"+this.range+"px, 0, 0)";
+
+            // 自動スライド開始
+            // setTimeout(this.Tick, this.interval);
         },
         Tick(){
             setTimeout(this.Tick.bind(), this.interval);
             if(this.autoLock) return;
             this.index == this.lastIndex ? this.index = 2 : this.index++;
-            console.log(this.index);
         },
         AutoLock(){
             let timerId = 0;
@@ -82,35 +83,52 @@ export default {
                 this.autoLock = false;
                 saveTimerIds = [];
             }
-            autoTimerId = setTimeout(auto, this.interval);
-            saveTimerIds.push(autoTimerId);
+            timerId = setTimeout(active, this.interval);
+            saveTimerIds.push(timerId);
             for (let i = 0; i < saveTimerIds.length - 1; i++) {
                 clearTimeout(saveTimerIds[i]);
             }
             this.autoLock = true;
         },
-        Effect(){
+        Effect(direction){
+            // スライドロック
             if(this.effectLock) return;
             this.effectLock = true;
-            this.index == this.lastIndex ? this.index = 2 : this.index++;
+
+            // スライドの方向選定
+            switch (direction) {
+                case "next":
+                    this.index == this.lastIndex ? this.index = 2 : this.index++;
+                    break;
+                case "prev":
+                    this.index == 0 ? this.index = this.lastIndex - 2 : this.index--;
+                    break;
+            }
+
+            // フェクト反映
             this.range = this.$el.clientWidth * this.index;
             this.$refs["wrapper"].style.transitionDuration = this.duration+"ms";
             this.$refs["wrapper"].style.transitionTimingFunction = this.easing;
             this.$refs["wrapper"].style.transform = "translate3d(-"+this.range+"px, 0, 0)";
+            // フェクトリセット
             this.$refs["wrapper"].addEventListener("transitionend", () => {
                 this.$refs["wrapper"].style.transitionDuration = "";
                 this.$refs["wrapper"].style.transitionTimingFunction = "";
                 if(this.index  == this.lastIndex){
                     this.$refs["wrapper"].style.transform = "translate3d(-"+this.$el.clientWidth+"px, 0, 0)";
+                }else if(this.index == 0){
+                    this.$refs["wrapper"].style.transform = "translate3d(-"+(this.$el.clientWidth * (this.lastIndex - 1))+"px, 0, 0)";
                 }
                 this.effectLock = false;
             });
         },
         Next(){
             this.AutoLock();
-            this.Effect();
+            this.Effect("next");
         },
         Prev(){
+            this.AutoLock();
+            this.Effect("prev");
         }
     }
 }
@@ -124,8 +142,8 @@ export default {
     &__wrapper{
         display: flex;
         position: relative;
-        width:100%;
-        height:100%;
+        width: 100%;
+        height: 100%;
     }
     &__slide{
         flex-shrink: 0;
