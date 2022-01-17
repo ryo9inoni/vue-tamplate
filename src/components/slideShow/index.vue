@@ -90,26 +90,17 @@ export default {
             }
             this.autoLock = true;
         },
-        Effect(direction){
+        Effect(){
             // スライドロック
             if(this.effectLock) return;
             this.effectLock = true;
 
-            // スライドの方向選定
-            switch (direction) {
-                case "next":
-                    this.index == this.lastIndex ? this.index = 2 : this.index++;
-                    break;
-                case "prev":
-                    this.index == 0 ? this.index = this.lastIndex - 2 : this.index--;
-                    break;
-            }
-
-            // フェクト反映
+            // フェクト適応
             this.range = this.$el.clientWidth * this.index;
             this.$refs["wrapper"].style.transitionDuration = this.duration+"ms";
             this.$refs["wrapper"].style.transitionTimingFunction = this.easing;
             this.$refs["wrapper"].style.transform = "translate3d(-"+this.range+"px, 0, 0)";
+
             // フェクトリセット
             this.$refs["wrapper"].addEventListener("transitionend", () => {
                 this.$refs["wrapper"].style.transitionDuration = "";
@@ -119,16 +110,20 @@ export default {
                 }else if(this.index == 0){
                     this.$refs["wrapper"].style.transform = "translate3d(-"+(this.$el.clientWidth * (this.lastIndex - 1))+"px, 0, 0)";
                 }
+
+                // スライドロック解除
                 this.effectLock = false;
             });
         },
         Next(){
-            this.AutoLock();
-            this.Effect("next");
+            this.index == this.lastIndex ? this.index = 2 : this.index++;
+            // this.AutoLock();
+            this.Effect();
         },
         Prev(){
-            this.AutoLock();
-            this.Effect("prev");
+            this.index == 0 ? this.index = this.lastIndex - 2 : this.index--;
+            // this.AutoLock();
+            this.Effect();
         }
     }
 }
