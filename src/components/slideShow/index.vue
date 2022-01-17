@@ -49,9 +49,9 @@ export default {
         }
     },
     computed:{
-        // Auto(){
-        //     return this.index;
-        // }
+        Auto(){
+            return this.index;
+        }
     },
     methods:{
         Init(){
@@ -68,13 +68,13 @@ export default {
             this.range = this.$el.clientWidth * this.index;
             this.$refs["wrapper"].style.transform = "translate3d(-"+this.range+"px, 0, 0)";
 
-            // 自動スライド開始
-            // setTimeout(this.Tick, this.interval);
+            // オートスライド開始
+            setTimeout(this.Tick, this.interval);
         },
         Tick(){
             setTimeout(this.Tick.bind(), this.interval);
-            if(this.autoLock) return;
-            this.index == this.lastIndex ? this.index = 2 : this.index++;
+            if(this.autoLock || this.effectLock) return;
+            this.Active("next");
         },
         AutoLock(){
             let timerId = 0;
@@ -95,13 +95,13 @@ export default {
             if(this.effectLock) return;
             this.effectLock = true;
 
-            // フェクト適応
+            // エフェクト適応
             this.range = this.$el.clientWidth * this.index;
             this.$refs["wrapper"].style.transitionDuration = this.duration+"ms";
             this.$refs["wrapper"].style.transitionTimingFunction = this.easing;
             this.$refs["wrapper"].style.transform = "translate3d(-"+this.range+"px, 0, 0)";
 
-            // フェクトリセット
+            // エフェクトリセット
             this.$refs["wrapper"].addEventListener("transitionend", () => {
                 this.$refs["wrapper"].style.transitionDuration = "";
                 this.$refs["wrapper"].style.transitionTimingFunction = "";
@@ -116,13 +116,44 @@ export default {
             });
         },
         Next(){
-            this.index == this.lastIndex ? this.index = 2 : this.index++;
-            // this.AutoLock();
-            this.Effect();
+            this.Active("next");
         },
         Prev(){
-            this.index == 0 ? this.index = this.lastIndex - 2 : this.index--;
-            // this.AutoLock();
+            this.Active("prev");
+        },
+        Direction(time){
+            if(this.index == 0){
+                switch (time) {
+                    case "next":
+                        this.index = this.lastIndex;
+                        break;
+                    case "prev":
+                        this.index = this.lastIndex - 2;
+                        break;
+                }
+            }else if(this.index == this.lastIndex){
+                switch (time) {
+                    case "next":
+                        this.index = 2;
+                        break;
+                    case "prev":
+                        this.index = 0;
+                        break;
+                }
+            }else{
+                switch (time) {
+                    case "next":
+                        this.index++;
+                        break;
+                    case "prev":
+                        this.index--;
+                        break;
+                }
+            }
+        },
+        Active(time){
+            this.AutoLock();
+            this.Direction(time);
             this.Effect();
         }
     }
