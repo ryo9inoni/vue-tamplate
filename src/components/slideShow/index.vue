@@ -36,7 +36,8 @@ export default {
             lastIndex: Number,
             range: Number,
             next_num: Number,
-            lock: false
+            autoLock: false,
+            effectLock: false,
         }
     },
     mounted(){
@@ -45,16 +46,12 @@ export default {
     },
     watch:{
         Auto(){
-            console.log("auto");
-            this.Active();
+            this.Effect();
         }
     },
     computed:{
         Auto(){
             return this.index;
-        },
-        Lock(){
-            return false;
         }
     },
     methods:{
@@ -74,9 +71,28 @@ export default {
         },
         Tick(){
             setTimeout(this.Tick.bind(), this.interval);
+            if(this.autoLock) return;
             this.index == this.lastIndex ? this.index = 2 : this.index++;
+            console.log(this.index);
         },
-        Active(){
+        AutoLock(){
+            let timerId = 0;
+            let saveTimerIds = [];
+            const active = () => {
+                this.autoLock = false;
+                saveTimerIds = [];
+            }
+            autoTimerId = setTimeout(auto, this.interval);
+            saveTimerIds.push(autoTimerId);
+            for (let i = 0; i < saveTimerIds.length - 1; i++) {
+                clearTimeout(saveTimerIds[i]);
+            }
+            this.autoLock = true;
+        },
+        Effect(){
+            if(this.effectLock) return;
+            this.effectLock = true;
+            this.index == this.lastIndex ? this.index = 2 : this.index++;
             this.range = this.$el.clientWidth * this.index;
             this.$refs["wrapper"].style.transitionDuration = this.duration+"ms";
             this.$refs["wrapper"].style.transitionTimingFunction = this.easing;
@@ -87,14 +103,14 @@ export default {
                 if(this.index  == this.lastIndex){
                     this.$refs["wrapper"].style.transform = "translate3d(-"+this.$el.clientWidth+"px, 0, 0)";
                 }
+                this.effectLock = false;
             });
         },
         Next(){
-            this.index++;
-            this.Active();
+            this.AutoLock();
+            this.Effect();
         },
         Prev(){
-            console.log("prev");
         }
     }
 }
