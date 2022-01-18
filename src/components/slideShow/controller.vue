@@ -14,16 +14,13 @@ export default {
         }
     },
     mounted(){
-
     },
     watch:{
-
     },
     computed:{
 
     },
     methods:{
-        
     }
 }
 </script>

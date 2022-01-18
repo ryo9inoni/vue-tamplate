@@ -6,6 +6,7 @@
     :duration="300",
     :easing="'ease-out'",
     :controller="true",
+    :pagination="true"
   )
 </template>
 

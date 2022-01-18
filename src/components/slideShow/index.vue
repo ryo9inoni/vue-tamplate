@@ -4,7 +4,7 @@
         .slideShow__slide(:data-index="index", data-show="false", v-for="img, index in contents", ref="slides")
             img(:src="img.path", :alt="img.alt", ref="images")
     Controller(v-if="controller", @next="Next", @prev="Prev")
-    Pagination(v-if="pagination", :length="lastIndex")
+    Pagination(v-if="pagination", :length="lastIndex", :index="index - 1")
 </template>
 
 <script>
@@ -13,7 +13,6 @@ import Controller from "@/components/slideShow/controller";
 import Pagination from "@/components/slideShow/pagination";
 
 // 機能
-// import SLIDE from "@/features/slide";
 // import FADE from "@/features/fade";
 
 export default {
@@ -35,9 +34,9 @@ export default {
             index: 1,
             lastIndex: Number,
             range: Number,
-            next_num: Number,
             autoLock: false,
             effectLock: false,
+            saveTimerIds: []
         }
     },
     mounted(){
@@ -71,55 +70,17 @@ export default {
             // オートスライド開始
             setTimeout(this.Tick, this.interval);
         },
-        Tick(){
-            setTimeout(this.Tick.bind(), this.interval);
-            if(this.autoLock || this.effectLock) return;
-            this.Active("next");
-        },
         AutoLock(){
-            let timerId = 0;
-            let saveTimerIds = [];
             const active = () => {
                 this.autoLock = false;
-                saveTimerIds = [];
+                this.saveTimerIds = [];
             }
-            timerId = setTimeout(active, this.interval);
-            saveTimerIds.push(timerId);
-            for (let i = 0; i < saveTimerIds.length - 1; i++) {
-                clearTimeout(saveTimerIds[i]);
+            const timerId = setTimeout(active, this.interval * 2);
+            this.saveTimerIds.push(timerId);
+            for (let i = 0; i < this.saveTimerIds.length - 1; i++) {
+                clearTimeout(this.saveTimerIds[i]);
             }
             this.autoLock = true;
-        },
-        Effect(){
-            // スライドロック
-            if(this.effectLock) return;
-            this.effectLock = true;
-
-            // エフェクト適応
-            this.range = this.$el.clientWidth * this.index;
-            this.$refs["wrapper"].style.transitionDuration = this.duration+"ms";
-            this.$refs["wrapper"].style.transitionTimingFunction = this.easing;
-            this.$refs["wrapper"].style.transform = "translate3d(-"+this.range+"px, 0, 0)";
-
-            // エフェクトリセット
-            this.$refs["wrapper"].addEventListener("transitionend", () => {
-                this.$refs["wrapper"].style.transitionDuration = "";
-                this.$refs["wrapper"].style.transitionTimingFunction = "";
-                if(this.index  == this.lastIndex){
-                    this.$refs["wrapper"].style.transform = "translate3d(-"+this.$el.clientWidth+"px, 0, 0)";
-                }else if(this.index == 0){
-                    this.$refs["wrapper"].style.transform = "translate3d(-"+(this.$el.clientWidth * (this.lastIndex - 1))+"px, 0, 0)";
-                }
-
-                // スライドロック解除
-                this.effectLock = false;
-            });
-        },
-        Next(){
-            this.Active("next");
-        },
-        Prev(){
-            this.Active("prev");
         },
         Direction(time){
             if(this.index == 0){
@@ -151,10 +112,46 @@ export default {
                 }
             }
         },
+        Effect(){
+            // スライドロック
+            if(this.effectLock) return;
+            this.effectLock = true;
+
+            // エフェクト適応
+            this.range = this.$el.clientWidth * this.index;
+            this.$refs["wrapper"].style.transitionDuration = this.duration+"ms";
+            this.$refs["wrapper"].style.transitionTimingFunction = this.easing;
+            this.$refs["wrapper"].style.transform = "translate3d(-"+this.range+"px, 0, 0)";
+
+            // エフェクトリセット
+            this.$refs["wrapper"].addEventListener("transitionend", () => {
+                this.$refs["wrapper"].style.transitionDuration = "";
+                this.$refs["wrapper"].style.transitionTimingFunction = "";
+                if(this.index  == this.lastIndex){
+                    this.$refs["wrapper"].style.transform = "translate3d(-"+this.$el.clientWidth+"px, 0, 0)";
+                }else if(this.index == 0){
+                    this.$refs["wrapper"].style.transform = "translate3d(-"+(this.$el.clientWidth * (this.lastIndex - 1))+"px, 0, 0)";
+                }
+
+                // スライドロック解除
+                this.effectLock = false;
+            });
+        },
         Active(time){
             this.AutoLock();
             this.Direction(time);
             this.Effect();
+        },
+        Tick(){
+            setTimeout(this.Tick.bind(), this.interval);
+            if(this.autoLock) return;
+            this.Active("next");
+        },
+        Next(){
+            this.Active("next");
+        },
+        Prev(){
+            this.Active("prev");
         }
     }
 }
@@ -173,6 +170,7 @@ export default {
     }
     &__slide{
         flex-shrink: 0;
+        width: 100%;
         img{
             width: 100%;
         }
