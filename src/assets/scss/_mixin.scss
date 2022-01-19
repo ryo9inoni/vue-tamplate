@@ -1,9 +1,7 @@
 $breakpoints: (
-    "sp": "screen and (max-width: 768px)",
-    "pc": "screen and (min-width: 769px)",
-    "tb": "screen and (min-width: 768px) and (max-width: 1023px)",
-    "lg": "screen and (min-width: 1024px) and (max-width: 1339px)",
-    "xl": "screen and (min-width: 1340px)",
+    "sp": "screen and (max-width: 599px)",
+    "tb": "screen and (min-width: 600px) and (max-width: 1024px)",
+    "pc": "screen and (min-width: 1025px)",
 );
 
 @mixin bp($device: "sp") {
@@ -40,18 +38,7 @@ $breakpoints: (
     }
 }
 
-@mixin clearFix{
-    &:before,
-    &:after{
-        content: "";
-        display: block;
-        overflow: hidden;
-        clear: both;
-        height: 1px;
-        margin-top: -1px;
-        visibility: hidden;
-    }
-    &{
-      *zoom: 1;
-    }
+@mixin button {
+    @include hover();
+    cursor: pointer;
 }

@@ -1,6 +1,6 @@
 <template lang="pug">
 .slideShow__pagination.pagination
-    .pagination__button(v-for="slide, index in length", ref="buttons", @click="$emit('paging')")
+    .pagination__button(data-show="false", v-for="slide, index in length", ref="buttons", @click="$emit('paging', index)")
 </template>
 
 <script>
@@ -17,21 +17,10 @@ export default {
     mounted(){
     },
     watch:{
-        Auto(){
-            console.log(length);
-            // this.$refs["buttons"][this.index].style.opacity = "0.7";
-            // console.log(this.$refs["buttons"][this.index]);
-        }
     },
     computed:{
-        Auto(){
-            return this.index;
-        }
     },
     methods:{
-        paging(){
-
-        }
     }
 }
 </script>
@@ -52,7 +41,7 @@ export default {
         position: relative;
         width: 32px;
         height: 32px;
-        cursor: pointer;
+        @include button();
         &::before{
             content: "";
             display: inline-block;
@@ -63,7 +52,19 @@ export default {
             height: 8px;
             background-color: #fff;
             border-radius: 50%;
+            transition-duration: 300ms;
+            transition-timing-function: "ease-out";
             transform: translate3d(-50%, -50%, 0);
+        }
+    }
+    &__button[data-show="true"]{
+        &::before{
+            opacity: 0.7;
+        }
+    }
+    &__button[data-show="false"]{
+        &::before{
+            opacity: 1;
         }
     }
 }

@@ -35,10 +35,8 @@ export default {
     height: 100%;
     z-index: 1;
     &__button{
-        position: absolute;
-        top: 50%;
-        cursor: pointer;
-        transform: translateY(-50%);
+        @include middle("y");
+        @include button();
         &.-next{
             right: 24px;
         }

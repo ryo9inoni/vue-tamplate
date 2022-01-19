@@ -9,6 +9,8 @@
  * FADE(element, "in", 300, "ease-out");
 ***/
 
+query
+
 const FADE = (element = null, type = "in", duration = 300, easing = "ease-out") => {
 
   // propertyValue
@@ -61,7 +63,6 @@ const FADE = (element = null, type = "in", duration = 300, easing = "ease-out") 
 
     // valueFirstとvalueが同じ値になるまで間、styleを監視
     if (valueFirst !== value) requestAnimationFrame(watch);
-
   };
   watch();
 

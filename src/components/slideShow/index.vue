@@ -4,7 +4,7 @@
         .slideShow__slide(:data-index="index", data-show="false", v-for="img, index in contents", ref="slides")
             img(:src="img.path", :alt="img.alt", ref="images")
     Controller(v-if="controller", @next="Next", @prev="Prev")
-    Pagination(v-if="pagination", :length="lastIndex", :index="index - 1")
+    Pagination(v-if="pagination", @paging="Paging" :length="lastIndex", :index="index - 1")
 </template>
 
 <script>
@@ -12,8 +12,8 @@
 import Controller from "@/components/slideShow/controller";
 import Pagination from "@/components/slideShow/pagination";
 
-// 機能
-// import FADE from "@/features/fade";
+// モジュール
+// import FADE from "@/modules/fade";
 
 export default {
     name: "SlideShow",
@@ -69,18 +69,6 @@ export default {
 
             // オートスライド開始
             setTimeout(this.Tick, this.interval);
-        },
-        AutoLock(){
-            const active = () => {
-                this.autoLock = false;
-                this.saveTimerIds = [];
-            }
-            const timerId = setTimeout(active, this.interval * 2);
-            this.saveTimerIds.push(timerId);
-            for (let i = 0; i < this.saveTimerIds.length - 1; i++) {
-                clearTimeout(this.saveTimerIds[i]);
-            }
-            this.autoLock = true;
         },
         Direction(time){
             if(this.index == 0){
@@ -147,11 +135,32 @@ export default {
             if(this.autoLock) return;
             this.Active("next");
         },
+        AutoLock(){
+            const active = () => {
+                this.autoLock = false;
+                this.saveTimerIds = [];
+            }
+            const timerId = setTimeout(active, this.interval * 2);
+            this.saveTimerIds.push(timerId);
+            for (let i = 0; i < this.saveTimerIds.length - 1; i++) {
+                clearTimeout(this.saveTimerIds[i]);
+            }
+            this.autoLock = true;
+        },
         Next(){
             this.Active("next");
         },
         Prev(){
             this.Active("prev");
+        },
+        Paging(i){
+            if(i > this.index){
+                this.index = i;
+                this.Active("next");
+            }else{
+                this.index = i;
+                this.Active("prev");
+            }
         }
     }
 }
