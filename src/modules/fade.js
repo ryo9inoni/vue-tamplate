@@ -9,8 +9,6 @@
  * FADE(element, "in", 300, "ease-out");
 ***/
 
-query
-
 const FADE = (element = null, type = "in", duration = 300, easing = "ease-out") => {
 
   // propertyValue
