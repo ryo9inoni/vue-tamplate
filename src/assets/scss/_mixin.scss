@@ -23,6 +23,24 @@ $breakpoints: (
     }
 }
 
+@mixin active($value: 0.7) {
+    @include transition();
+    backface-visibility: hidden;
+    &:active{
+        opacity: #{$value};
+    }
+}
+
+@mixin link {
+    @include hover();
+    cursor: pointer;
+}
+
+@mixin button {
+    @include active();
+    cursor: pointer;
+}
+
 @mixin middle ($value: "xy") {
     position: absolute;
     @if $value == "xy" {
@@ -36,9 +54,4 @@ $breakpoints: (
         top: 50%;
         transform: translateY(-50%);
     }
-}
-
-@mixin button {
-    @include hover();
-    cursor: pointer;
 }

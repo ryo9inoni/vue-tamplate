@@ -1,10 +1,10 @@
 <template lang="pug">
 .slideShow(@load="Init")
-	.slideShow__wrapper(ref="wrapper")
+	.slideShow__truck(ref="truck")
 		.slideShow__slide(:data-index="index", data-show="false", v-for="img, index in contents", ref="slides")
 			img(:src="img.path", :alt="img.alt", ref="images")
-		Controller(v-if="controller", @next="Next", @prev="Prev")
-		Pagination(v-if="pagination", @paging="Paging" :length="lastIndex", :index="index - 1")
+	Controller(v-if="controller", @next="Next", @prev="Prev")
+	Pagination(v-if="pagination", @paging="Paging" :length="lastIndex", :index="index - 1")
 </template>
 
 <script>
@@ -55,17 +55,17 @@ export default {
 	methods:{
 		Init(){
 			// 最初と最後の要素のクローンを生成
-			const fistChildClone = this.$refs["wrapper"].firstElementChild.cloneNode(true);
-			const lastChildClone = this.$refs["wrapper"].lastElementChild.cloneNode(true);
-			this.$refs["wrapper"].append(fistChildClone);
-			this.$refs["wrapper"].prepend(lastChildClone);
+			const fistClone = this.$refs["truck"].firstElementChild.cloneNode(true);
+			const lastClone = this.$refs["truck"].lastElementChild.cloneNode(true);
+			this.$refs["truck"].append(fistClone);
+			this.$refs["truck"].prepend(lastClone);
 
 			// スライドの長さ取得
 			this.lastIndex = this.$refs["slides"].length + 1;
 
 			// 初期位置設定
 			this.range = this.$el.clientWidth * this.index;
-			this.$refs["wrapper"].style.transform = "translate3d(-"+this.range+"px, 0, 0)";
+			this.$refs["truck"].style.transform = "translate3d(-"+this.range+"px, 0, 0)";
 
 			// オートスライド開始
 				setTimeout(this.Tick, this.interval);
@@ -101,30 +101,28 @@ export default {
 			}
 		},
 		Effect(){
-			// スライドロック
-			if(this.effectLock) return;
-			this.effectLock = true;
-
 			// エフェクト適応
 			this.range = this.$el.clientWidth * this.index;
-			this.$refs["wrapper"].style.transitionDuration = this.duration+"ms";
-			this.$refs["wrapper"].style.transitionTimingFunction = this.easing;
-			this.$refs["wrapper"].style.transform = "translate3d(-"+this.range+"px, 0, 0)";
+			this.$refs["truck"].style.transitionDuration = this.duration+"ms";
+			this.$refs["truck"].style.transitionTimingFunction = this.easing;
+			this.$refs["truck"].style.transform = "translate3d(-"+this.range+"px, 0, 0)";
 
 			// エフェクトリセット
-			this.$refs["wrapper"].addEventListener("transitionend", () => {
-				this.$refs["wrapper"].style.transitionDuration = "";
-				this.$refs["wrapper"].style.transitionTimingFunction = "";
+			this.$refs["truck"].addEventListener("transitionend", () => {
+				this.$refs["truck"].style.transitionDuration = "";
+				this.$refs["truck"].style.transitionTimingFunction = "";
 				if(this.index  == this.lastIndex){
-						this.$refs["wrapper"].style.transform = "translate3d(-"+this.$el.clientWidth+"px, 0, 0)";
+						this.$refs["truck"].style.transform = "translate3d(-"+this.$el.clientWidth+"px, 0, 0)";
 				}else if(this.index == 0){
-						this.$refs["wrapper"].style.transform = "translate3d(-"+(this.$el.clientWidth * (this.lastIndex - 1))+"px, 0, 0)";
+						this.$refs["truck"].style.transform = "translate3d(-"+(this.$el.clientWidth * (this.lastIndex - 1))+"px, 0, 0)";
 				}
 				// スライドロック解除
 				this.effectLock = false;
 			});
 		},
 		Active(time){
+			if(this.effectLock) return;
+			this.effectLock = true;
 			this.AutoLock();
 			this.Direction(time);
 			this.Effect();
@@ -151,15 +149,6 @@ export default {
 		},
 		Prev(){
 			this.Active("prev");
-		},
-		Paging(i){
-			if(i > this.index){
-				this.index = i;
-				this.Active("next");
-			}else{
-				this.index = i;
-				this.Active("prev");
-			}
 		}
 	}
 }
@@ -170,7 +159,7 @@ export default {
 	overflow: hidden;
 	position: relative;
 	max-width: 640px;
-	&__wrapper{
+	&__truck{
 		display: flex;
 		position: relative;
 		width: 100%;

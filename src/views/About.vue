@@ -37,16 +37,16 @@ export default {
 	align-items: center;
 	padding: 36px 24px;
 	width: 100%;
-&__wrapper{
-	display: flex;
-	justify-content: center;
-	flex-direction: column;
-	padding-top: 320px;
-}
-&__block{
-	margin-bottom: 240px;
-	max-width: 500px;
-	@include transition(1300);
+	&__wrapper{
+		display: flex;
+		justify-content: center;
+		flex-direction: column;
+		padding-top: 320px;
+	}
+	&__block{
+		margin-bottom: 240px;
+		max-width: 500px;
+		@include transition(1300);
 		img{
 			width: 100%;
 		}
