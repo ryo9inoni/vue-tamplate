@@ -7,21 +7,6 @@
 <script>
 export default {
 	name: "Controller",
-	props:{
-	},
-	data(){
-		return{
-		}
-	},
-	mounted(){
-	},
-	watch:{
-	},
-	computed:{
-
-	},
-	methods:{
-	}
 }
 </script>
 

@@ -1,6 +1,6 @@
 <template lang="pug">
 .slideShow__pagination.pagination
-  .pagination__button(data-show="false", v-for="slide, index in length", ref="buttons", @click="$emit('paging', index)")
+  .pagination__button(data-show="false", v-for="slide, index in length", @click="$emit('paging', index)")
 </template>
 
 <script>
@@ -8,20 +8,7 @@ export default {
 	name: "Pagination",
 	props:{
 		length: Number,
-		index: Number
 	},
-	data(){
-		return{
-		}
-	},
-	mounted(){
-	},
-	watch:{
-	},
-	computed:{
-	},
-	methods:{
-	}
 }
 </script>
 

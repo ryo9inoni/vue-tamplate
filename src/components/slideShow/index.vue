@@ -4,7 +4,7 @@
 		.slideShow__slide(:data-index="index", data-show="false", v-for="img, index in contents", ref="slides")
 			img(:src="img.path", :alt="img.alt", ref="images")
 	Controller(v-if="controller", @next="Next", @prev="Prev")
-	Pagination(v-if="pagination", @paging="Paging" :length="lastIndex", :index="index - 1")
+	Pagination(v-if="pagination", @paging="Paging" :length="slideLength")
 </template>
 
 <script>
@@ -32,10 +32,11 @@ export default {
 	data(){
 		return{
 			index: 1,
-			lastIndex: Number,
-			range: Number,
-			autoLock: false,
-			effectLock: false,
+			lastIndex: 0,
+			slideLength: 0,
+			range: 0,
+			lock: false,
+			tickLock: false,
 			saveTimerIds: []
 		}
 	},
@@ -54,24 +55,25 @@ export default {
 	},
 	methods:{
 		Init(){
+			// スライドの長さ取得
+			this.slideLength = this.$refs["slides"].length;
+			this.lastIndex = this.$refs["slides"].length + 1;
+
 			// 最初と最後の要素のクローンを生成
 			const fistClone = this.$refs["truck"].firstElementChild.cloneNode(true);
 			const lastClone = this.$refs["truck"].lastElementChild.cloneNode(true);
 			this.$refs["truck"].append(fistClone);
 			this.$refs["truck"].prepend(lastClone);
 
-			// スライドの長さ取得
-			this.lastIndex = this.$refs["slides"].length + 1;
-
 			// 初期位置設定
 			this.range = this.$el.clientWidth * this.index;
 			this.$refs["truck"].style.transform = "translate3d(-"+this.range+"px, 0, 0)";
 
 			// オートスライド開始
-				setTimeout(this.Tick, this.interval);
+			setTimeout(this.Tick, this.interval);
 		},
-		Direction(time){
-			if(this.index == 0){
+		Direction(time, page){
+			if(0 == this.index){
 				switch (time) {
 					case "next":
 						this.index = this.lastIndex;
@@ -80,7 +82,7 @@ export default {
 						this.index = this.lastIndex - 2;
 						break;
 				}
-			}else if(this.index == this.lastIndex){
+			}else if(this.lastIndex == this.index){
 				switch (time) {
 					case "next":
 						this.index = 2;
@@ -89,6 +91,20 @@ export default {
 						this.index = 0;
 						break;
 				}
+			}else if(0 == page){
+				switch (time) {
+					case "prev":
+						this.index = 1;
+						break;
+				}
+			}else if(this.slideLength == page){
+				switch (time) {
+					case "next":
+						this.index = this.lastIndex - 1;
+						break;
+				}
+			} else if(!page){
+				this.index = page;
 			}else{
 				switch (time) {
 					case "next":
@@ -117,39 +133,46 @@ export default {
 						this.$refs["truck"].style.transform = "translate3d(-"+(this.$el.clientWidth * (this.lastIndex - 1))+"px, 0, 0)";
 				}
 				// スライドロック解除
-				this.effectLock = false;
+				this.lock = false;
 			});
-		},
-		Active(time){
-			if(this.effectLock) return;
-			this.effectLock = true;
-			this.AutoLock();
-			this.Direction(time);
-			this.Effect();
 		},
 		Tick(){
 			setTimeout(this.Tick.bind(), this.interval);
-			if(this.autoLock) return;
+			if(this.tickLock) return;
 			this.Active("next");
 		},
-		AutoLock(){
+		TickLock(){
 			const active = () => {
-				this.autoLock = false;
+				this.tickLock = false;
 				this.saveTimerIds = [];
 			}
-			const timerId = setTimeout(active, this.interval * 2);
+			const timerId = setTimeout(active, this.interval);
 			this.saveTimerIds.push(timerId);
 			for (let i = 0; i < this.saveTimerIds.length - 1; i++) {
 				clearTimeout(this.saveTimerIds[i]);
 			}
-			this.autoLock = true;
+			this.tickLock = true;
 		},
 		Next(){
 			this.Active("next");
 		},
 		Prev(){
 			this.Active("prev");
-		}
+		},
+		Paging(i){
+			if(i > this.index){
+				this.Active("next", i);
+			}else if(i < this.index){
+				this.Active("prev", i);
+			}
+		},
+		Active(time, page){
+			if(this.lock) return;
+			this.lock = true;
+			this.TickLock();
+			this.Direction(time, page);
+			this.Effect();
+		},
 	}
 }
 </script>
