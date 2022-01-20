@@ -21,8 +21,8 @@ const FADE = (element = null, type = "in", duration = 300, easing = "ease-out") 
 		element.style.transitionDuration = duration+"ms";
 		element.style.transitionTimingFunction = easing;
 		element.addEventListener("transitionend", () => {
-		element.style.transitionDuration = "";
-		element.style.transitionTimingFunction = "";
+			element.style.transitionDuration = "";
+			element.style.transitionTimingFunction = "";
 		});
 	}
 
