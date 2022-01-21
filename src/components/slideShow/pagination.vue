@@ -7,7 +7,7 @@
 export default {
 	name: "Pagination",
 	props:{
-		length: Number,
+		length: Array,
 		index: Number,
 	},
 	data(){

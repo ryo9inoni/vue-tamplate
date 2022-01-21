@@ -1,7 +1,7 @@
 <template lang="pug">
-.slideShow(@load="Init")
+.slideShow
 	.slideShow__truck(ref="truck")
-		.slideShow__slide(:data-index="index", data-show="false", v-for="img, index in contents", ref="slides")
+		.slideShow__slide(:data-index="index" v-for="img, index in contents", ref="slides")
 			img(:src="img.path", :alt="img.alt", ref="images")
 	Controller(v-if="controller", @next="Next", @prev="Prev")
 	Pagination(v-if="pagination", :length="contents", :index="index", @paging="Paging")
