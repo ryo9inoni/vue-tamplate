@@ -1,6 +1,6 @@
 <template lang="pug">
 .home
-	SlideShow_fade(
+	SlideShow(
 		:contents="images",
 		:interval="3000",
 		:duration="300",
@@ -11,12 +11,12 @@
 </template>
 
 <script>
-import SlideShow_fade from "@/components/slideShow/";
+import SlideShow from "@/components/slideShow/";
 
 export default {
 	name: "Home",
 	components: {
-		SlideShow_fade,
+		SlideShow,
 	},
 	data(){
 		return{
