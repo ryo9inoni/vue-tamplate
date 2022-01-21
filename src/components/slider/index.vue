@@ -1,7 +1,7 @@
 <template lang="pug">
-.slideShow
-	.slideShow__truck(ref="truck")
-		.slideShow__slide(:data-index="index" v-for="img, index in contents", ref="slides")
+.slider
+	.slider__carousel.carousel(ref="carousel")
+		.carousel__cell(:data-index="index" v-for="img, index in contents", ref="cells")
 			img(:src="img.path", :alt="img.alt", ref="images")
 	Controller(v-if="controller", @next="Next", @prev="Prev")
 	Pagination(v-if="pagination", :length="contents", :index="index", @paging="Paging")
@@ -9,14 +9,14 @@
 
 <script>
 // コンポーネント
-import Controller from "@/components/slideShow/controller";
-import Pagination from "@/components/slideShow/pagination";
+import Controller from "@/components/slider/controller";
+import Pagination from "@/components/slider/pagination";
 
 // モジュール
 // import FADE from "@/modules/fade";
 
 export default {
-	name: "SlideShow",
+	name: "Slider",
 	components:{
 		Controller,
 		Pagination
@@ -56,17 +56,17 @@ export default {
 	methods:{
 		Init(){
 			// スライドの長さ取得
-			this.lastIndex = this.$refs["slides"].length + 1;
+			this.lastIndex = this.$refs["cells"].length + 1;
 
 			// 最初と最後の要素のクローンを生成
-			const fistClone = this.$refs["truck"].firstElementChild.cloneNode(true);
-			const lastClone = this.$refs["truck"].lastElementChild.cloneNode(true);
-			this.$refs["truck"].append(fistClone);
-			this.$refs["truck"].prepend(lastClone);
+			const fistClone = this.$refs["carousel"].firstElementChild.cloneNode(true);
+			const lastClone = this.$refs["carousel"].lastElementChild.cloneNode(true);
+			this.$refs["carousel"].append(fistClone);
+			this.$refs["carousel"].prepend(lastClone);
 
 			// 初期位置設定
 			this.range = this.$el.clientWidth * this.index;
-			this.$refs["truck"].style.transform = "translate3d(-"+this.range+"px, 0, 0)";
+			this.$refs["carousel"].style.transform = "translate3d(-"+this.range+"px, 0, 0)";
 
 			// オートスライド開始
 			setTimeout(this.Tick, this.interval);
@@ -104,18 +104,18 @@ export default {
 		Effect(){
 			// エフェクト適応
 			this.range = this.$el.clientWidth * this.index;
-			this.$refs["truck"].style.transitionDuration = this.duration+"ms";
-			this.$refs["truck"].style.transitionTimingFunction = this.easing;
-			this.$refs["truck"].style.transform = "translate3d(-"+this.range+"px, 0, 0)";
+			this.$refs["carousel"].style.transitionDuration = this.duration+"ms";
+			this.$refs["carousel"].style.transitionTimingFunction = this.easing;
+			this.$refs["carousel"].style.transform = "translate3d(-"+this.range+"px, 0, 0)";
 
 			// エフェクトリセット
-			this.$refs["truck"].addEventListener("transitionend", () => {
-				this.$refs["truck"].style.transitionDuration = "";
-				this.$refs["truck"].style.transitionTimingFunction = "";
+			this.$refs["carousel"].addEventListener("transitionend", () => {
+				this.$refs["carousel"].style.transitionDuration = "";
+				this.$refs["carousel"].style.transitionTimingFunction = "";
 				if(this.index  == this.lastIndex){
-						this.$refs["truck"].style.transform = "translate3d(-"+this.$el.clientWidth+"px, 0, 0)";
+						this.$refs["carousel"].style.transform = "translate3d(-"+this.$el.clientWidth+"px, 0, 0)";
 				}else if(this.index == 0){
-						this.$refs["truck"].style.transform = "translate3d(-"+(this.$el.clientWidth * (this.lastIndex - 1))+"px, 0, 0)";
+						this.$refs["carousel"].style.transform = "translate3d(-"+(this.$el.clientWidth * (this.lastIndex - 1))+"px, 0, 0)";
 				}
 				// スライドロック解除
 				this.lock = false;
@@ -159,21 +159,21 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.slideShow{
+.slider{
 	overflow: hidden;
 	position: relative;
 	max-width: 640px;
-	&__truck{
+	.carousel{
 		display: flex;
 		position: relative;
 		width: 100%;
 		height: 100%;
-	}
-	&__slide{
-		flex-shrink: 0;
-		width: 100%;
-		img{
-				width: 100%;
+		&__cell{
+			flex-shrink: 0;
+			width: 100%;
+			img{
+					width: 100%;
+			}
 		}
 	}
 }

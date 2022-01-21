@@ -1,6 +1,6 @@
 <template lang="pug">
 .home
-	SlideShow(
+	Slider(
 		:contents="images",
 		:interval="3000",
 		:duration="300",
@@ -11,12 +11,12 @@
 </template>
 
 <script>
-import SlideShow from "@/components/slideShow/";
+import Slider from "@/components/slider/";
 
 export default {
 	name: "Home",
 	components: {
-		SlideShow,
+		Slider,
 	},
 	data(){
 		return{
