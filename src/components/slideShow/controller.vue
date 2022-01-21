@@ -1,12 +1,12 @@
 <template lang="pug">
-.slideShow__controller.controller
+.slideShow__controller.controller(ref="controller")
 	.controller__button.-next(@click="$emit('next')")
 	.controller__button.-prev(@click="$emit('prev')")
 </template>
 
 <script>
 export default {
-	name: "Controller",
+	name: "Controller"
 }
 </script>
 

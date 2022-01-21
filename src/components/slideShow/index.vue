@@ -4,7 +4,7 @@
 		.slideShow__slide(:data-index="index", data-show="false", v-for="img, index in contents", ref="slides")
 			img(:src="img.path", :alt="img.alt", ref="images")
 	Controller(v-if="controller", @next="Next", @prev="Prev")
-	Pagination(v-if="pagination", @paging="Paging" :length="slideLength")
+	Pagination(v-if="pagination", :length="contents", :index="index", @paging="Paging")
 </template>
 
 <script>
@@ -41,7 +41,7 @@ export default {
 		}
 	},
 	mounted(){
-		window.addEventListener("load", this.Init);
+			window.addEventListener("load", this.Init);
 	},
 	watch:{
 		Auto(){
@@ -56,7 +56,6 @@ export default {
 	methods:{
 		Init(){
 			// スライドの長さ取得
-			this.slideLength = this.$refs["slides"].length;
 			this.lastIndex = this.$refs["slides"].length + 1;
 
 			// 最初と最後の要素のクローンを生成
@@ -72,7 +71,7 @@ export default {
 			// オートスライド開始
 			setTimeout(this.Tick, this.interval);
 		},
-		Direction(time, page){
+		Direction(time){
 			if(0 == this.index){
 				switch (time) {
 					case "next":
@@ -91,20 +90,6 @@ export default {
 						this.index = 0;
 						break;
 				}
-			}else if(0 == page){
-				switch (time) {
-					case "prev":
-						this.index = 1;
-						break;
-				}
-			}else if(this.slideLength == page){
-				switch (time) {
-					case "next":
-						this.index = this.lastIndex - 1;
-						break;
-				}
-			} else if(!page){
-				this.index = page;
 			}else{
 				switch (time) {
 					case "next":
@@ -160,17 +145,13 @@ export default {
 			this.Active("prev");
 		},
 		Paging(i){
-			if(i > this.index){
-				this.Active("next", i);
-			}else if(i < this.index){
-				this.Active("prev", i);
-			}
+			this.Active("page", i);
 		},
 		Active(time, page){
 			if(this.lock) return;
 			this.lock = true;
 			this.TickLock();
-			this.Direction(time, page);
+			time == "page" ? this.index = page : this.Direction(time);
 			this.Effect();
 		},
 	}

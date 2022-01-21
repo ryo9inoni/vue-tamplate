@@ -1,6 +1,6 @@
 <template lang="pug">
-.slideShow__pagination.pagination
-  .pagination__button(data-show="false", v-for="slide, index in length", @click="$emit('paging', index)")
+.slideShow__pagination.pagination(ref="pagination")
+  .pagination__button(data-show="false", v-for="slide, index in length", ref="buttons" @click="$emit('paging', index + 1)")
 </template>
 
 <script>
@@ -8,7 +8,38 @@ export default {
 	name: "Pagination",
 	props:{
 		length: Number,
+		index: Number,
 	},
+	data(){
+		return{
+			lastIndex: Number
+		}
+	},
+	watch:{
+		Auto(i){
+			const showButton = document.querySelector(".pagination__button[data-show='true']");
+			showButton.dataset.show = false;
+			if(0 == i){
+				i = this.lastIndex - 2;
+			}else if(this.lastIndex == i){
+				i = 0;
+			}else{
+				i = i - 1
+			}
+			this.$refs["buttons"][i].dataset.show = true;
+		}
+	},
+	computed:{
+		Auto(){
+			return this.index;
+		}
+	},
+	mounted(){
+		this.lastIndex = this.$refs["buttons"].length + 1;
+		this.$refs["buttons"][0].dataset.show = true;
+	},
+	methods: {
+	}
 }
 </script>
 
@@ -32,19 +63,18 @@ export default {
 		&::before{
 			content: "";
 			display: inline-block;
-			position: absolute;
-			top: 50%;
-			left: 50%;
 			width: 8px;
 			height: 8px;
 			background-color: #fff;
 			border-radius: 50%;
-			transition-duration: 300ms;
-			transition-timing-function: "ease-out";
-			transform: translate3d(-50%, -50%, 0);
+			opacity: 0;
+			@include middle("xy");
+			@include transition();
 		}
 	}
 	&__button[data-show="true"]{
+		cursor: default;
+		pointer-events: none;
 		&::before{
 				opacity: 0.7;
 		}
