@@ -1,5 +1,5 @@
 <template lang="pug">
-.slideShow__controller.controller(ref="controller")
+.slider__controller.controller
 	.controller__button.-next(@click="$emit('next')")
 	.controller__button.-prev(@click="$emit('prev')")
 </template>

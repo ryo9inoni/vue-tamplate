@@ -4,7 +4,7 @@
 		.carousel__cell(:data-index="index" v-for="img, index in contents", ref="cells")
 			img(:src="img.path", :alt="img.alt", ref="images")
 	Controller(v-if="controller", @next="Next", @prev="Prev")
-	Pagination(v-if="pagination", :length="contents", :index="index", @paging="Paging")
+	Pagination(v-if="pagination", :contents="contents", @paging="Paging" @GetPagination="SetPagination")
 </template>
 
 <script>
@@ -27,10 +27,11 @@ export default {
 		duration: Number,
 		easing: String,
 		controller: Boolean,
-		pagination: Boolean
+		pagination: Boolean,
 	},
 	data(){
 		return{
+			paginationButtons: [],
 			index: 1,
 			lastIndex: 0,
 			slideLength: 0,
@@ -46,6 +47,7 @@ export default {
 	watch:{
 		Auto(){
 			this.Effect();
+			// this.AutoPagination();
 		}
 	},
 	computed:{
@@ -70,6 +72,23 @@ export default {
 
 			// オートスライド開始
 			setTimeout(this.Tick, this.interval);
+		},
+		SetPagination(buttons){
+			this.paginationButtons = buttons;
+			this.paginationButtons[0].dataset.show = true;
+		},
+		AutoPagination(){
+			const showButton = document.querySelector(".pagination__button[data-show='true']");
+			showButton.dataset.show = false;
+			let i;
+			if(this.index == 0){
+				i = this.lastIndex - 2;
+			}else if(this.index == this.lastIndex){
+				i = 0;
+			}else{
+				i = this.index - 1;
+			}
+			this.paginationButtons[i].dataset.show = true;
 		},
 		Direction(time){
 			if(0 == this.index){
@@ -144,13 +163,27 @@ export default {
 		Prev(){
 			this.Active("prev");
 		},
-		Paging(i){
+		Paging(index){
+			const showButton = document.querySelector(".pagination__button[data-show='true']");
+			showButton.dataset.show = false;
+			this.paginationButtons[i].dataset.show = true;
+
+			let i;
+			if(index == 0){
+				i = this.lastIndex - 1;
+			}else if(index == this.lastIndex){
+				i = 0;
+			}else{
+				i = + 1;
+			}
+
 			this.Active("page", i);
 		},
 		Active(time, page){
 			if(this.lock) return;
 			this.lock = true;
 			this.TickLock();
+			console.log(page);
 			time == "page" ? this.index = page : this.Direction(time);
 			this.Effect();
 		},

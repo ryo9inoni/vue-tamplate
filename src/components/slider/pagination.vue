@@ -1,44 +1,16 @@
 <template lang="pug">
-.slideShow__pagination.pagination(ref="pagination")
-  .pagination__button(data-show="false", v-for="slide, index in length", ref="buttons" @click="$emit('paging', index + 1)")
+.slider__pagination.pagination(ref="pagination")
+  .pagination__button(data-show="false", v-for="img, index in contents", ref="buttons" @click="$emit('paging', index)")
 </template>
 
 <script>
 export default {
 	name: "Pagination",
 	props:{
-		length: Array,
-		index: Number,
-	},
-	data(){
-		return{
-			lastIndex: Number
-		}
-	},
-	watch:{
-		Auto(i){
-			const showButton = document.querySelector(".pagination__button[data-show='true']");
-			showButton.dataset.show = false;
-			if(0 == i){
-				i = this.lastIndex - 2;
-			}else if(this.lastIndex == i){
-				i = 0;
-			}else{
-				i = i - 1
-			}
-			this.$refs["buttons"][i].dataset.show = true;
-		}
-	},
-	computed:{
-		Auto(){
-			return this.index;
-		}
+		contents: Array,
 	},
 	mounted(){
-		this.lastIndex = this.$refs["buttons"].length + 1;
-		this.$refs["buttons"][0].dataset.show = true;
-	},
-	methods: {
+		this.$emit("GetPagination", this.$refs["buttons"]);
 	}
 }
 </script>
