@@ -12,9 +12,6 @@
 import Controller from "@/components/slider/controller";
 import Pagination from "@/components/slider/pagination";
 
-// モジュール
-// import FADE from "@/modules/fade";
-
 export default {
 	name: "Slider",
 	components:{
