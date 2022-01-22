@@ -4,7 +4,7 @@
 		.carousel__cell(:data-index="index" v-for="img, index in contents", ref="cells")
 			img(:src="img.path", :alt="img.alt", ref="images")
 	Controller(v-if="controller", @next="Next", @prev="Prev")
-	Pagination(v-if="pagination", :contents="contents", @paging="Paging" @GetPagination="SetPagination")
+	Pagination(v-if="pagination", :contents="contents", @paging="Paging" @GetPagination="InitPagination")
 </template>
 
 <script>
@@ -73,7 +73,7 @@ export default {
 			// オートスライド開始
 			setTimeout(this.Tick, this.interval);
 		},
-		SetPagination(buttons){
+		InitPagination(buttons){
 			this.paginationButtons = buttons;
 			this.paginationButtons[0].dataset.show = true;
 		},
