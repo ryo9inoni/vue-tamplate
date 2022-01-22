@@ -47,7 +47,7 @@ export default {
 	watch:{
 		Auto(){
 			this.Effect();
-			// this.AutoPagination();
+			this.AutoPagination();
 		}
 	},
 	computed:{
@@ -166,18 +166,9 @@ export default {
 		Paging(index){
 			const showButton = document.querySelector(".pagination__button[data-show='true']");
 			showButton.dataset.show = false;
-			this.paginationButtons[i].dataset.show = true;
+			this.paginationButtons[index].dataset.show = true;
 
-			let i;
-			if(index == 0){
-				i = this.lastIndex - 1;
-			}else if(index == this.lastIndex){
-				i = 0;
-			}else{
-				i = + 1;
-			}
-
-			this.Active("page", i);
+			this.Active("page", index + 1);
 		},
 		Active(time, page){
 			if(this.lock) return;
