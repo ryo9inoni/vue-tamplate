@@ -9,7 +9,7 @@ const PARALLAX = (elements) => {
 			const client = document.documentElement.clientHeight;
 			const pos = offset + top - client;
 
-			if (offset >= pos) elements[i].dataset.effect = "fade-in";
+			if (offset >= pos) elements[i].dataset.parallax = "fade-in";
 
 		}
 

@@ -1,7 +1,7 @@
 <template lang="pug">
 .about
 	.about__wrapper
-		.about__block(data-effect="fade-out", v-for="img in images", ref="blocks")
+		.about__block(data-parallax="fade-out", v-for="img in images", ref="blocks")
 			img(:src="img.path", :alt="img.alt")
 </template>
 
