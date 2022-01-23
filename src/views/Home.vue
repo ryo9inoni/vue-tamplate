@@ -1,9 +1,9 @@
 <template lang="pug">
 .home
-	Slider(
+	Slider_Fade(
 		:contents="images",
 		:interval="3000",
-		:duration="300",
+		:duration="900",
 		:easing="'ease-out'",
 		:controller="true",
 		:pagination="true"
@@ -11,12 +11,12 @@
 </template>
 
 <script>
-import Slider from "@/components/slider/";
+import Slider_Fade from "@/components/slider/fade";
 
 export default {
 	name: "Home",
 	components: {
-		Slider,
+		Slider_Fade,
 	},
 	data(){
 		return{
