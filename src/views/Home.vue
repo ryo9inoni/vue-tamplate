@@ -1,21 +1,55 @@
 <template lang="pug">
 .home
-	Slider_Fade(
-		:contents="images",
-		:interval="3000",
-		:duration="900",
-		:easing="'ease-out'",
-		:controller="true",
-		:pagination="true"
-	)
+	.home__block
+		Slider(
+			:id="'a'",
+			:contents="images",
+			:interval="1000",
+			:duration="300",
+			:easing="'ease-out'",
+			:controller="true",
+			:pagination="true"
+		)
+	.home__block
+		Slider_Fade(
+			:id="'b'",
+			:contents="images",
+			:interval="3000",
+			:duration="500",
+			:easing="'ease-out'",
+			:controller="true",
+			:pagination="true"
+		)
+	.home__block
+		Slider(
+			:id="'c'",
+			:contents="images",
+			:interval="5000",
+			:duration="1000",
+			:easing="'ease-out'",
+			:controller="true",
+			:pagination="true"
+		)
+	.home__block
+		Slider_Fade(
+			:id="'d'",
+			:contents="images",
+			:interval="7000",
+			:duration="1300",
+			:easing="'ease-out'",
+			:controller="true",
+			:pagination="true"
+		)
 </template>
 
 <script>
+import Slider from "@/components/slider/";
 import Slider_Fade from "@/components/slider/fade";
 
 export default {
 	name: "Home",
 	components: {
+		Slider,
 		Slider_Fade,
 	},
 	data(){
@@ -36,8 +70,11 @@ export default {
 .home{
 	display: flex;
 	justify-content: center;
-	align-items: center;
-	padding: 36px 24px;
+	flex-direction: column;
+	padding: 36px 120px;
 	width: 100%;
+	&__block{
+		margin: 0 auto 40px;
+	}
 }
 </style>

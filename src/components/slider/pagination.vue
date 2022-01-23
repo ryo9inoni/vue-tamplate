@@ -48,7 +48,7 @@ export default {
 		cursor: default;
 		pointer-events: none;
 		&::before{
-				opacity: 0.7;
+				opacity: 0.3;
 		}
 	}
 	&__button[data-show="false"]{

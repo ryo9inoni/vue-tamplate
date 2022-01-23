@@ -1,5 +1,5 @@
 <template lang="pug">
-.slider
+.slider(:id="id")
 	.slider__carousel.carousel(ref="carousel")
 		.carousel__cell(data-show="false" :data-index="index" v-for="img, index in contents", ref="cells")
 			img(:src="img.path", :alt="img.alt", ref="images")
@@ -19,6 +19,7 @@ export default {
 		Pagination
 	},
 	props:{
+		id: String,
 		contents: Array,
 		interval: Number,
 		duration: Number,
@@ -44,7 +45,7 @@ export default {
 	watch:{
 		Auto(){
 			this.Effect();
-			this.EffectPagination();
+			this.DirectionPagination();
 		}
 	},
 	computed:{
@@ -86,9 +87,12 @@ export default {
 				}
 			}
 		},
+		DirectionPagination(){
+			this.EffectPagination(this.index);
+		},
 		Effect(){
 			// エフェクト適応
-      const showCell = document.querySelector(".carousel__cell[data-show='true']");
+      const showCell = document.querySelector("#"+this.id+" .carousel__cell[data-show='true']");
       showCell.dataset.show = "false";
       this.$refs["cells"][this.index].dataset.show = "true";
 
@@ -99,7 +103,7 @@ export default {
 			});
 		},
 		EffectPagination(){
-			const showButton = document.querySelector(".pagination__button[data-show='true']");
+			const showButton = document.querySelector("#"+this.id+" .pagination__button[data-show='true']");
 			showButton.dataset.show = false;
 			this.paginationButtons[this.index].dataset.show = true;
 		},

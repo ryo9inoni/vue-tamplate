@@ -1,5 +1,5 @@
 <template lang="pug">
-.slider
+.slider(:id="id")
 	.slider__carousel.carousel(ref="carousel")
 		.carousel__cell(:data-index="index" v-for="img, index in contents", ref="cells")
 			img(:src="img.path", :alt="img.alt", ref="images")
@@ -19,6 +19,7 @@ export default {
 		Pagination
 	},
 	props:{
+		id: String,
 		contents: Array,
 		interval: Number,
 		duration: Number,
@@ -136,7 +137,7 @@ export default {
 			});
 		},
 		EffectPagination(index){
-			const showButton = document.querySelector(".pagination__button[data-show='true']");
+			const showButton = document.querySelector("#"+this.id+" .pagination__button[data-show='true']");
 			showButton.dataset.show = false;
 			this.paginationButtons[index].dataset.show = true;
 		},
