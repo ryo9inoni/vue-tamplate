@@ -105,8 +105,6 @@ export default {
 			}
 		},
 		DirectionPagination(){
-			const showButton = document.querySelector(".pagination__button[data-show='true']");
-			showButton.dataset.show = false;
 			let i;
 			if(0 == this.index ){
 				i = this.lastIndex - 2;
@@ -115,7 +113,7 @@ export default {
 			}else{
 				i = this.index - 1;
 			}
-			this.paginationButtons[i].dataset.show = true;
+			this.EffectPagination(i);
 		},
 		Effect(){
 			// エフェクト適応
@@ -136,6 +134,11 @@ export default {
 				// スライドロック解除
 				this.lock = false;
 			});
+		},
+		EffectPagination(index){
+			const showButton = document.querySelector(".pagination__button[data-show='true']");
+			showButton.dataset.show = false;
+			this.paginationButtons[index].dataset.show = true;
 		},
 		Tick(){
 			setTimeout(this.Tick.bind(), this.interval);
@@ -161,10 +164,7 @@ export default {
 			this.Active("prev");
 		},
 		Paging(index){
-			const showButton = document.querySelector(".pagination__button[data-show='true']");
-			showButton.dataset.show = false;
-			this.paginationButtons[index].dataset.show = true;
-
+			this.EffectPagination(index);
 			this.Active("page", index + 1);
 		},
 		Active(time, page){
