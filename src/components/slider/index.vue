@@ -78,9 +78,9 @@ export default {
 			const showButton = document.querySelector(".pagination__button[data-show='true']");
 			showButton.dataset.show = false;
 			let i;
-			if(this.index == 0){
+			if(0 == this.index ){
 				i = this.lastIndex - 2;
-			}else if(this.index == this.lastIndex){
+			}else if(this.lastIndex == this.index){
 				i = 0;
 			}else{
 				i = this.index - 1;
