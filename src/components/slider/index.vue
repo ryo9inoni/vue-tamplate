@@ -44,7 +44,7 @@ export default {
 	watch:{
 		Auto(){
 			this.Effect();
-			this.AutoPagination();
+			this.DirectionPagination();
 		}
 	},
 	computed:{
@@ -73,19 +73,6 @@ export default {
 		InitPagination(buttons){
 			this.paginationButtons = buttons;
 			this.paginationButtons[0].dataset.show = true;
-		},
-		AutoPagination(){
-			const showButton = document.querySelector(".pagination__button[data-show='true']");
-			showButton.dataset.show = false;
-			let i;
-			if(0 == this.index ){
-				i = this.lastIndex - 2;
-			}else if(this.lastIndex == this.index){
-				i = 0;
-			}else{
-				i = this.index - 1;
-			}
-			this.paginationButtons[i].dataset.show = true;
 		},
 		Direction(time){
 			if(0 == this.index){
@@ -116,6 +103,19 @@ export default {
 						break;
 				}
 			}
+		},
+		DirectionPagination(){
+			const showButton = document.querySelector(".pagination__button[data-show='true']");
+			showButton.dataset.show = false;
+			let i;
+			if(0 == this.index ){
+				i = this.lastIndex - 2;
+			}else if(this.lastIndex == this.index){
+				i = 0;
+			}else{
+				i = this.index - 1;
+			}
+			this.paginationButtons[i].dataset.show = true;
 		},
 		Effect(){
 			// エフェクト適応
