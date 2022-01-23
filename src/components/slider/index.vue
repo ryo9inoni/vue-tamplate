@@ -171,7 +171,6 @@ export default {
 			if(this.lock) return;
 			this.lock = true;
 			this.TickLock();
-			console.log(page);
 			time == "page" ? this.index = page : this.Direction(time);
 			this.Effect();
 		},
