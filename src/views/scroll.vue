@@ -11,7 +11,7 @@
   )
   .truck(ref="truck")
     .truck__block(v-for="img in images")
-      img(:src="img.path", :alt="img.alt")
+      img(:src="img.path", :alt="img.alt" data-show="false" ref="images")
 </template>
 
 <script>
@@ -62,6 +62,8 @@ export default {
         // 移動範囲設定
         this.$refs["truck"].style.transform = "translate3d(-"+this.range+"px, 0, 0)";
       }
+
+      this.Parallax();
     },
     Start(e){
       this.$store.state.interactive = true;
@@ -70,6 +72,7 @@ export default {
     Move(e){
       if(!this.$store.state.interactive) return;
       if(this.range >= 0 && this.range <= this.width){
+        // 移動範囲取得
         this.moveX = e.pageX;
         this.endX = this.startX - this.moveX + this.range;
 
@@ -82,11 +85,23 @@ export default {
 
         // 移動範囲設定
         this.$refs["truck"].style.transform = "translate3d(-"+this.endX+"px, 0, 0)";
+
+        this.Parallax();
       }
     },
     End(){
       this.$store.state.interactive = false;
       this.range = this.endX;
+    },
+    Parallax(){
+      for (let index = 0; index < this.$refs["images"].length; index++) {
+        const position = this.$refs["images"][index].getBoundingClientRect().left;
+        if(position <= window.innerWidth){
+          this.$refs["images"][index].dataset.show = true;
+        }else{
+          this.$refs["images"][index].dataset.show = false;
+        }
+      }
     }
   }
 }
@@ -121,6 +136,13 @@ export default {
       pointer-events: none;
       img{
         width: 460px;
+        @include transition(1500);
+      }
+      img[data-show="true"]{
+        opacity: 1;
+      }
+      img[data-show="false"]{
+        opacity: 0;
       }
     }
   }
