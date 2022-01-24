@@ -64,17 +64,25 @@ export default {
       }
     },
     Start(e){
-      console.log();
       this.$store.state.interactive = true;
       this.startX = e.pageX;
     },
     Move(e){
       if(!this.$store.state.interactive) return;
-      this.moveX = e.pageX;
-      this.endX = this.startX - this.moveX + this.range;
+      if(this.range >= 0 && this.range <= this.width){
+        this.moveX = e.pageX;
+        this.endX = this.startX - this.moveX + this.range;
 
-      // 移動範囲設定
-      this.$refs["truck"].style.transform = "translate3d(-"+this.endX+"px, 0, 0)";
+        // 移動範囲を超えてしまった場合、最大・最小値に戻す
+        if(this.endX <= 0){
+          this.endX = 0;
+        }else if(this.endX >= this.width){
+          this.endX = this.width;
+        }
+
+        // 移動範囲設定
+        this.$refs["truck"].style.transform = "translate3d(-"+this.endX+"px, 0, 0)";
+      }
     },
     End(){
       this.$store.state.interactive = false;
