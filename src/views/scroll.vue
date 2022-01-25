@@ -2,12 +2,12 @@
 .road(
     ref="road",
     @wheel="Wheel",
-    @mousedown="Start",
+    @mousedown="Press",
     @mousemove="Move",
-    @mouseup="End",
-    @touchstart="Start",
+    @mouseup="Release",
+    @touchstart="Press",
     @touchmove="Move",
-    @touchend="End"
+    @touchend="Release"
   )
   .truck(ref="truck")
     .truck__block(v-for="img in images")
@@ -65,7 +65,7 @@ export default {
 
       this.Parallax();
     },
-    Start(e){
+    Press(e){
       this.$store.state.interactive = true;
       this.startX = e.pageX;
     },
@@ -89,7 +89,7 @@ export default {
         this.Parallax();
       }
     },
-    End(){
+    Release(){
       this.$store.state.interactive = false;
       this.range = this.endX;
     },
@@ -127,8 +127,7 @@ export default {
     left: 0;
     min-width: 100%;
     height: 100%;
-    transition-duration: 500ms;
-    transition-timing-function: ease-out;
+    @include transition(300);
     &__block{
       flex-shrink: 0;
       width: 100vw;
@@ -136,7 +135,7 @@ export default {
       pointer-events: none;
       img{
         width: 460px;
-        @include transition(1500);
+        @include transition(300);
       }
       img[data-show="true"]{
         opacity: 1;

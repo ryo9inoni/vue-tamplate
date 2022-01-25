@@ -12,7 +12,7 @@ $breakpoints: (
 
 @mixin transition($value: 300) {
     transition-duration: #{$value}ms;
-    transition-timing-function: "ease-out";
+    transition-timing-function: ease-out;
 }
 
 @mixin hover($value: 0.7) {
