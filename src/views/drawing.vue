@@ -23,32 +23,41 @@ export default {
       Touch.enable(stage);
     }
 
-    const shape = new Shape();
-    stage.addChild(shape);
+    for (let i = 0; i < 200; i++) {
+      const shape = new Shape();
+      stage.addChild(shape);
+      shape.x = 50 * Math.random();
+      shape.y = 50 * Math.random();
+    }
 
     stage.addEventListener("stagemousedown", handleDown);
     function handleDown(event) {
       var paintColor = "#FFFFFF"
-
-      shape.graphics
-        .beginStroke(paintColor)
-        .setStrokeStyle(1, "round")
-        .moveTo(event.stageX, event.stageY);
+      
+      for (let i = 0; i < stage.children.length; i++) {
+        stage.children[i].graphics
+          .beginStroke(paintColor)
+          .setStrokeStyle(1, "round")
+          .moveTo(event.stageX, event.stageY);
+      }
 
       stage.addEventListener("stagemousemove", handleMove);
       stage.addEventListener("stagemouseup", handleUp);
     }
 
     function handleMove(event) {
-      shape.graphics.lineTo(event.stageX, event.stageY);
+      for (let i = 0; i < stage.children.length; i++) {
+        stage.children[i].graphics.lineTo(event.stageX, event.stageY);
+      }
     }
 
     function handleUp(event) {
-      shape.graphics.lineTo(event.stageX, event.stageY);
-      shape.graphics.endStroke();
-
-      stage.removeEventListener("stagemousemove", handleMove);
-      stage.removeEventListener("stagemouseup", handleUp);
+      for (let i = 0; i < stage.children.length; i++) {
+        stage.children[i].graphics.lineTo(event.stageX, event.stageY);
+        stage.children[i].graphics.endStroke();
+      }
+      // stage.removeEventListener("stagemousemove", handleMove);
+      // stage.removeEventListener("stagemouseup", handleUp);
     }
   },
   methods:{
