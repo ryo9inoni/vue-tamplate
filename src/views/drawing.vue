@@ -23,7 +23,7 @@ export default {
       Touch.enable(stage);
     }
 
-    for (let i = 0; i < 200; i++) {
+    for (let i = 0; i < 100; i++) {
       const shape = new Shape();
       stage.addChild(shape);
       shape.x = 50 * Math.random();
@@ -37,7 +37,7 @@ export default {
       for (let i = 0; i < stage.children.length; i++) {
         stage.children[i].graphics
           .beginStroke(paintColor)
-          .setStrokeStyle(1, "round")
+          .setStrokeStyle(2, "round")
           .moveTo(event.stageX, event.stageY);
       }
 
@@ -56,8 +56,8 @@ export default {
         stage.children[i].graphics.lineTo(event.stageX, event.stageY);
         stage.children[i].graphics.endStroke();
       }
-      // stage.removeEventListener("stagemousemove", handleMove);
-      // stage.removeEventListener("stagemouseup", handleUp);
+      stage.removeEventListener("stagemousemove", handleMove);
+      stage.removeEventListener("stagemouseup", handleUp);
     }
   },
   methods:{
