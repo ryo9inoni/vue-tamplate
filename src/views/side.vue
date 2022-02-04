@@ -1,17 +1,18 @@
 <template lang="pug">
-.road(
-    ref="road",
-    @wheel="Wheel",
-    @mousedown="Press",
-    @mousemove="Move",
-    @mouseup="Release",
-    @touchstart="Press",
-    @touchmove="Move",
-    @touchend="Release"
-  )
-  .truck(ref="truck")
-    .truck__block(v-for="img in images")
-      img(:src="img.path", :alt="img.alt" data-show="false" ref="images")
+.side
+  .road(
+      ref="road",
+      @wheel="Wheel",
+      @mousedown="Press",
+      @mousemove="Move",
+      @mouseup="Release",
+      @touchstart="Press",
+      @touchmove="Move",
+      @touchend="Release"
+    )
+    .truck(ref="truck")
+      .truck__block(v-for="img in images")
+        img(:src="img.path", :alt="img.alt" data-show="false" ref="images")
 </template>
 
 <script>
@@ -119,32 +120,32 @@ export default {
   &:active{
     cursor: grabbing;
   }
-  .truck{
-    display: flex;
-    align-items: center;
-    position: absolute;
-    top: 0;
-    left: 0;
-    min-width: 100%;
-    height: 100%;
-    @include transition(300);
-    &__block{
-      flex-shrink: 0;
-      width: 100vw;
-      text-align: center;
-      pointer-events: none;
-      img{
-        width: 460px;
-        @include transition(300);
-      }
-      img[data-show="true"]{
-        opacity: 1;
-      }
-      img[data-show="false"]{
-        opacity: 0;
-      }
+}
+
+.truck{
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  height: 100%;
+  @include transition(300);
+  &__block{
+    flex-shrink: 0;
+    width: 100vw;
+    text-align: center;
+    pointer-events: none;
+    img{
+      width: 460px;
+      @include transition(300);
+    }
+    img[data-show="true"]{
+      opacity: 1;
+    }
+    img[data-show="false"]{
+      opacity: 0;
     }
   }
-
 }
 </style>

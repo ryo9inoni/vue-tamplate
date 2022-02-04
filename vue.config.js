@@ -1,4 +1,16 @@
 module.exports = {
+    configureWebpack: {
+        module: {
+            rules: [
+                {
+                    test: /\.(vert|frag|glsl)$/,
+                    use: {
+                    loader: 'webpack-glsl-loader'
+                    }
+                }
+            ],
+        },
+    },
     css: {
         loaderOptions: {
             scss: {

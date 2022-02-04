@@ -13,14 +13,24 @@ const routes = [
 		component: () => import('../views/parallax.vue')
 	},
 	{
-		path: '/scroll',
-		name: 'Scroll',
-		component: () => import('../views/scroll.vue')
+		path: '/grid',
+		name: 'Grid',
+		component: () => import('../views/grid.vue')
+	},
+	{
+		path: '/side',
+		name: 'side',
+		component: () => import('../views/side.vue')
 	},
 	{
 		path: '/drawing',
 		name: 'Drawing',
 		component: () => import('../views/drawing.vue')
+	},
+	{
+		path: '/three',
+		name: 'Three',
+		component: () => import('../views/three.vue')
 	}
 ]
 
@@ -29,4 +39,4 @@ const router = createRouter({
 	routes
 })
 
-export default router
+export default router;
