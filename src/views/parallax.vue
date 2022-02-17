@@ -1,8 +1,9 @@
 <template lang="pug">
-.about
+main.about
 	.about__wrapper
-		.about__block(data-parallax="fade-out", v-for="img in images", ref="blocks")
-			img(:src="img.path", :alt="img.alt")
+		section.section(v-for="section in sectionArray", ref="section")
+			h2.section__heading(ref="heading") {{ section.heading }}
+			img.section__image(:src="section.image", :alt="section.heading")
 </template>
 
 <script>
@@ -15,17 +16,17 @@ export default {
 	},
 	data(){
 		return{
-			images: [
-				{ path: "/assets/img/img_01.jpg", alt: "イメージ 01" },
-				{ path: "/assets/img/img_02.jpg", alt: "イメージ 02" },
-				{ path: "/assets/img/img_03.jpg", alt: "イメージ 03" },
-				{ path: "/assets/img/img_04.jpg", alt: "イメージ 04" },
-				{ path: "/assets/img/img_05.jpg", alt: "イメージ 05" },
+			sectionArray: [
+				{ image: "/assets/img/img_01.jpg", heading: "イメージ 01" },
+				{ image: "/assets/img/img_02.jpg", heading: "イメージ 02" },
+				{ image: "/assets/img/img_03.jpg", heading: "イメージ 03" },
+				{ image: "/assets/img/img_04.jpg", heading: "イメージ 04" },
+				{ image: "/assets/img/img_05.jpg", heading: "イメージ 05" },
 			]
 		}
 	},
 	mounted(){
-		PARALLAX(this.$refs["blocks"]);
+		PARALLAX(this.$refs["heading"]);
 	}
 }
 </script>
@@ -43,11 +44,17 @@ export default {
 		flex-direction: column;
 		padding-top: 320px;
 	}
-	&__block{
+	.section{
+		position: relative;
 		margin-bottom: 240px;
 		max-width: 500px;
-		@include transition(1300);
-		img{
+		&__heading{
+			position: absolute;
+			left: -25%;
+			font-size: 4rem;
+			@include transition(300);
+		}
+		&__image{
 			width: 100%;
 		}
 	}
