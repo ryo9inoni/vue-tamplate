@@ -1,17 +1,18 @@
 const PARALLAX = (elements) => {
-	const duration = 0.05;
-	let positions = [];
-	elements.forEach(element => {
-		positions.push(element.getBoundingClientRect().top);
-	});
-
-	window.addEventListener("scroll", () => {
-		for (let index = 0; index < positions.length; index++) {
-			if (window.scrollY + window.innerHeight >= positions[index]) {
-				let y = (window.scrollY - positions[index] + window.innerHeight) * duration;
+	const process = () => {
+		for (let index = 0; index < elements.length; index++) {
+			const offset = window.pageYOffset;
+			const top = elements[index].getBoundingClientRect().top;
+			const height = window.innerHeight;
+			const position = offset + top - height;
+			const duration = 0.05;
+			if (offset >= position){
+				let y = (offset - position) * duration;
 				elements[index].style.transform = "translate3d(0, "+y+"px, 0)";
 			}
 		}
-	});
+	}
+	window.addEventListener("load", process);
+	window.addEventListener("scroll", process);
 }
 export default PARALLAX;
