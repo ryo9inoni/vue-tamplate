@@ -1,6 +1,7 @@
 <template lang="pug">
 main.about
 	.about__wrapper
+		.about__block
 		section.section(v-for="section in sectionArray", ref="section")
 			h2.section__heading(ref="heading") {{ section.heading }}
 			img.section__image(:src="section.image", :alt="section.heading")
@@ -42,7 +43,10 @@ export default {
 		display: flex;
 		justify-content: center;
 		flex-direction: column;
-		padding-top: 320px;
+	}
+	&__block{
+		width: 100%;
+		height: 100vh;
 	}
 	.section{
 		position: relative;
@@ -52,11 +56,13 @@ export default {
 			position: absolute;
 			left: -25%;
 			font-size: 4rem;
-			@include transition(300);
 		}
 		&__image{
 			width: 100%;
 		}
+	}
+	[data-parallax="on"]{
+		@include transition(300);
 	}
 }
 </style>

@@ -7,8 +7,15 @@ const PARALLAX = (elements) => {
 			const position = offset + top - height;
 			const duration = 0.05;
 			if (offset >= position){
-				let y = (offset - position) * duration;
-				elements[index].style.transform = "translate3d(0, "+y+"px, 0)";
+				new Promise((resolve) => {
+					let y = (offset - position) * duration;
+					elements[index].style.transform = "translate3d(0, "+y+"px, 0)";
+					resolve();
+				}).then(() => {
+					if(elements[index].dataset.parallax !== "on") {
+						elements[index].dataset.parallax = "on";
+					}
+				});
 			}
 		}
 	}
