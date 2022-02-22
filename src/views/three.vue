@@ -5,7 +5,6 @@
 
 <script>
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 export default {
   data(){
@@ -13,11 +12,13 @@ export default {
     }
   },
   mounted(){
-    const canvasElement = document.querySelector("#canvas");
+    const canvas = document.querySelector("#canvas");
 
     // レンダラーを作成
     const renderer = new THREE.WebGLRenderer({
-      canvas: canvasElement
+      canvas: canvas,
+      alpha: true,
+      antialias: true
     });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -29,73 +30,38 @@ export default {
     const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight);
     camera.position.set(0, 0, 1000);
 
-    // カメラコントローラーを作成
-    const controls = new OrbitControls(camera, canvasElement);
+    // ライト
+    const light = new THREE.AmbientLight(0xffffff);
+    scene.add(light);
 
-    // 滑らかにカメラコントローラーを制御する
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.2;
-
-    // 平行光源を作成
-    const directionalLight = new THREE.DirectionalLight(0xffffff);
-    directionalLight.position.set(1, 1, 1);
-    scene.add(directionalLight);
-
-    // マテリアルを作成
-    const material = new THREE.MeshStandardMaterial({
-      map: new THREE.TextureLoader().load('/assets/img/earth.jpg'),
-    });
-
-    // 球体の形状を作成します
-    const geometry = new THREE.SphereGeometry(300, 30, 30);
-    // 形状とマテリアルからメッシュを作成します
-    const earthMesh = new THREE.Mesh(geometry, material);
-    // シーンにメッシュを追加します
-    scene.add(earthMesh);
-
-    /** 星屑を作成します */
-    const createStarField = () => {
-      // 頂点情報を格納する配列
-      const vertices = [];
-      // 1000 個の頂点を作成
-      for (let i = 0; i < 1000; i++) {
-        const x = 3000 * (Math.random() - 0.5);
-        const y = 3000 * (Math.random() - 0.5);
-        const z = 3000 * (Math.random() - 0.5);
-
-        vertices.push(x, y, z);
-      }
-
-      // 形状データを作成
-      const geometry = new THREE.BufferGeometry();
-      geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-
-      // マテリアルを作成
-      const material = new THREE.PointsMaterial({
-        size: 10,
-        color: 0xffffff,
+    // 平面
+    var num = 45;
+    for (let index = 0; index < num; index++) {
+      const loader = new THREE.TextureLoader()
+      .load("/assets/img/img_"+index+".jpg", (texture) => { // 読み込み完了時
+        const geometry = new THREE.PlaneGeometry(1, 1);
+        const material = new THREE.MeshPhongMaterial({map: loader});
+        const mesh = new THREE.Mesh(geometry, material);
+        if (index % 4 == 0) {
+          mesh.position.set(index * 10, index * 10, index * -50);
+        } else if (index % 4 == 1) {
+          mesh.position.set(index  * -10, index * 10, index * -50);
+        } else if (index % 4 == 2) {
+          mesh.position.set(index * 10, index * -10, index * -50);
+        } else if (index % 4 == 3) {
+          mesh.position.set(index * -10, index  * -10, index * -50);
+        }
+        mesh.scale.set(texture.image.width / 3, texture.image.height / 3, 1);
+        scene.add(mesh);
       });
-
-      // 物体を作成
-      const mesh = new THREE.Points(geometry, material);
-      scene.add(mesh);
     }
-    // 星屑を作成します (カメラの動きをわかりやすくするため)
-    createStarField();
 
-    const tick = () => {
-      // 地球は常に回転させておく
-      earthMesh.rotation.y += 0.00001;
-
-      // カメラコントローラーを更新
-      controls.update();
-
-      // レンダリング
+    // レンダリング
+    const render = () => {
       renderer.render(scene, camera);
-
-      requestAnimationFrame(tick);
+      requestAnimationFrame(render);
     }
-    tick();
+    render();
   }
 }
 </script>
