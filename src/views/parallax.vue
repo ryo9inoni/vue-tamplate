@@ -18,11 +18,11 @@ export default {
 	data(){
 		return{
 			sectionArray: [
-				{ image: "/assets/img/img_01.jpg", heading: "イメージ 01" },
-				{ image: "/assets/img/img_02.jpg", heading: "イメージ 02" },
-				{ image: "/assets/img/img_03.jpg", heading: "イメージ 03" },
-				{ image: "/assets/img/img_04.jpg", heading: "イメージ 04" },
-				{ image: "/assets/img/img_05.jpg", heading: "イメージ 05" },
+				{ image: "/assets/img/sample_01.jpg", heading: "イメージ 01" },
+				{ image: "/assets/img/sample_02.jpg", heading: "イメージ 02" },
+				{ image: "/assets/img/sample_03.jpg", heading: "イメージ 03" },
+				{ image: "/assets/img/sample_04.jpg", heading: "イメージ 04" },
+				{ image: "/assets/img/sample_05.jpg", heading: "イメージ 05" },
 			]
 		}
 	},

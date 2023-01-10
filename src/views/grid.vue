@@ -22,7 +22,6 @@ export default {
     }
   },
   watch:{
-    
   },
   mounted(){
     this.BreakPoint(this.$el.clientWidth);

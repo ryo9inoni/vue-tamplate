@@ -18,11 +18,6 @@ const routes = [
 		component: () => import('../views/grid.vue')
 	},
 	{
-		path: '/side',
-		name: 'side',
-		component: () => import('../views/side.vue')
-	},
-	{
 		path: '/drawing',
 		name: 'Drawing',
 		component: () => import('../views/drawing.vue')
